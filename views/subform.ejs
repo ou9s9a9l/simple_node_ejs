@@ -6,7 +6,7 @@
     <script src="/socket.io/socket.io.js"></script>
     <script>
  //   
-  var socket = io.connect('192.168.1.101');
+  var socket = io.connect('localhost');
   socket.on('news', function (data) {
     console.log(data);
     socket.emit('my other event', { my: 'data' });
@@ -15,10 +15,13 @@
    socket.emit('join', { room:roomnumber });
   };
   socket.on('updata', function (data) {
-    x=document.getElementById("demo");  // 找到元素
-    x.innerHTML=data.hello;    // 改变内容
+    //x=document.getElementById("demo");  // 找到元素
+    //x.innerHTML=data.hello;    // 改变内容
+    if(document.getElementById("chat-window").value.length>100) 
+      document.getElementById("chat-window").value="";
+    document.getElementById("chat-window").value+=data.hello;
   });
-    
+
 var int;
 function openclock(){
   int=window.setInterval("clock()",2000);
@@ -30,19 +33,14 @@ function clock()
     </script>
   </head>
  <body>     
-      <% include nav %>
-      <form method="post">
-        用户名：  <input type="text" id="txtUserName" name="txtUsername"/>
-        密码：   <input type="password" id="textUserPwd" name="txtUserPwd"/>
-        <input type="submit" value="提交">
-      </form>
-       <p id="demo">
-        点击下面链接链接到socket服务器
-        </p>
+   
+  <div><textarea id="chat-window" cols="100" rows="2"></textarea></div>
+  </form>
         <button onclick=joinroom("room1")>room1</button>
         <button onclick=joinroom("room2")>room2</button>
         <button onclick="openclock()">开启定时器</button>
          <button onclick="int=window.clearInterval(int)">关闭定时器</button>
+             
   </body>
   </body>
 </html>

@@ -105,11 +105,11 @@ var tcpserver = net.createServer(function (socket) {
   // 新的连接
   //console.log(socket.id.toString());
   socket.on('data', function (data) {
-    if(firstdat)
-    {dat=data.toString();
+   
+    dat=data.toString();
     io.emit('updata', { hello:dat });
-    console.log(dat);}
-    firstdat=true;
+    console.log(dat);
+    
   });
 });
 
@@ -117,18 +117,3 @@ tcpserver.listen(23, function () {
   console.log('server bound');
 });
 
-var tcpserver1 = net.createServer(function (socket) {
-  // 新的连接
-  //console.log(socket.id.toString());
-  socket.on('data', function (data) {
-    if(firstdat)
-    {dat=data.toString();
-    io.emit('updata', { hello:dat });
-    console.log(dat);}
-    firstdat=true;
-  });
-});
-
-tcpserver1.listen(24, function () {
-  console.log('server bound');
-});
