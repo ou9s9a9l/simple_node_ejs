@@ -18,9 +18,11 @@
     //x=document.getElementById("demo");  // 找到元素
     //x.innerHTML=data.hello;    // 改变内容
     if(document.getElementById("chat-window").value.length>100) 
-      document.getElementById("chat-window").value="";
-    document.getElementById("chat-window").value+=data.hello;
+      document.getElementById("chat-window").value=data.hello;
+    else document.getElementById("chat-window").value+=data.hello+"\n";
+    console.log(data.hello.length);
   });
+
 
 var int;
 function openclock(){

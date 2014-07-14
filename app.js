@@ -99,16 +99,38 @@ io.on('connection', function (socket) {
   
 
 var net = require('net');
-var dat
+var dat,a;
 var firstdat = false;
 var tcpserver = net.createServer(function (socket) {
   // 新的连接
   //console.log(socket.id.toString());
   socket.on('data', function (data) {
-   
-    dat=data.toString();
-    io.emit('updata', { hello:dat });
-    console.log(dat);
+   array=new Array(data.length);
+   for(a=0;a<data.length;a++)
+    {
+      array[a]=data[a];
+      array[a]=array[a].toString(16);
+      if(array[a]=="0"||
+        array[a]=="1"||
+        array[a]=="2"||
+        array[a]=="3"||
+        array[a]=="4"||
+        array[a]=="5"||
+        array[a]=="6"||
+        array[a]=="7"||
+        array[a]=="8"||
+        array[a]=="9"||
+        array[a]=="a"||
+        array[a]=="b"||
+        array[a]=="c"||
+        array[a]=="d"||
+        array[a]=="e"||
+        array[a]=="f")
+        array[a]="0"+ array[a];
+     // if (array[a]==",") array[a]=" ";
+    }
+    io.emit('updata', { hello:array });
+    console.log(array.length);
     
   });
 });
