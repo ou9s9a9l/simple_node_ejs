@@ -6,43 +6,51 @@
     <script src="/socket.io/socket.io.js"></script>
     <script>
  //   
-  var socket = io.connect('localhost');
+  var ip_addr = document.location.hostname;
+  var socket = io.connect(ip_addr);
   socket.on('news', function (data) {
     console.log(data);
     socket.emit('my other event', { my: 'data' });
   });
+
   function joinroom(roomnumber){
    socket.emit('join', { room:roomnumber });
   };
+  function cleartxt(){
+    document.getElementById("chat-window").value="";
+};
+  var a;
   socket.on('updata', function (data) {
-    //x=document.getElementById("demo");  // 找到元素
-    //x.innerHTML=data.hello;    // 改变内容
-    if(document.getElementById("chat-window").value.length>500) 
-      document.getElementById("chat-window").value=data.hello;
-    else document.getElementById("chat-window").value+=data.hello+"\n";
+
+    for(a=0;a<data.hello.length;a++)
+    document.getElementById("chat-window").value+=data.hello[a]+" ";
+    document.getElementById("chat-window").value+="\n";
     console.log(data.hello.length);
   });
 
 
-var int;
-function openclock(){
-  int=window.setInterval("clock()",2000);
-}
-function clock()
-  {
-  socket.emit('request', { room:'1' });
-  }
-    </script>
+
+/////////////who in room
+socket.on('roomsin', function (data) {
+    document.getElementById(data.room).class="btn btn-lg btn-warning";
+  });
+
+  </script>
+   <% include nav %>
+
+
+
   </head>
  <body>     
-   
-  <div><textarea id="chat-window" cols="100" rows="2"></textarea></div>
-  </form>
-        <button onclick=joinroom("room1")>room1</button>
-        <button onclick=joinroom("room2")>room2</button>
-        <button onclick="openclock()">开启定时器</button>
-         <button onclick="int=window.clearInterval(int)">关闭定时器</button>
+
+       <textarea id="chat-window" ></textarea>
+
+  <button id="room1" type="button" class="btn btn-lg btn-success" onclick=joinroom("room1")>进入平南</button>
+  <button id="room2" type="button" class="btn btn-lg btn-info" onclick=joinroom("room2")>进入保定南</button>
+  <button  type="button" class="btn btn-lg btn-info" onclick="cleartxt()">清空</button>
+     
+
              
-  </body>
+  <% include footer %>
   </body>
 </html>

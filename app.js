@@ -4,12 +4,11 @@ var favicon = require('static-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var routes = require('./routes/index');
 
+var routes = require('./routes/index');
 var subform = require('./routes/subform');
-var usesession = require('./routes/usesession');
 var usecookies = require('./routes/usecookies');
-var usecrypto = require('./routes/usecrypto'); 
+
 
 var app = express();
 var server = require('http').Server(app);
@@ -28,9 +27,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/subform', subform);
-app.use('/usesession', usesession);
 app.use('/usecookies', usecookies);
-app.use('/usecrypto', usecrypto);
 app.use('/', routes);
 
 
@@ -79,11 +76,14 @@ io.on('connection', function (socket) {
   });
 
   socket.on('join', function (data) {
-    socket.join(data.room);
-    //console.log(socket.id+" joined room :"+data.room);
-    console.log(socket.rooms);
+    socket.join(data.room,function (){
+      console.log(socket.id+" joined "+socket.rooms[socket.rooms.length-1]);
+    });
   });
 
+  socket.on('disconnect', function(){
+    console.log("socketid is:"+socket.id+" disconnect");
+  });
   socket.on('request',function (data){
    //io.emit('updata', data);
     socket.in('room1').emit('updata', { hello: 'hello,room1' });
@@ -96,15 +96,21 @@ io.on('connection', function (socket) {
  
 });
 
-  
+
 
 var net = require('net');
 var dat,a;
 var firstdat = false;
 var tcpserver = net.createServer(function (socket) {
   // 新的连接
+  console.log('CONNECTED: ' +
+        socket.remoteAddress + ':' + socket.remotePort);
   //console.log(socket.id.toString());
   socket.on('data', function (data) {
+
+    socket.write("1");
+
+
    array=new Array(data.length);
    for(a=0;a<data.length;a++)
     {
@@ -129,12 +135,13 @@ var tcpserver = net.createServer(function (socket) {
         array[a]="0"+ array[a];
      // if (array[a]==",") array[a]=" ";
     }
-    io.emit('updata', { hello:array });
+    io.in('room1').emit('updata', { hello:array });
     console.log(array.length);
+  
     
   });
 });
-
+  
 tcpserver.listen(23, function () {
   console.log('server bound');
 });
