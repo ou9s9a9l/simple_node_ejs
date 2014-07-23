@@ -65,30 +65,42 @@ app.use(function(err, req, res, next) {
 server.listen(80);
 module.exports = app;
 var a=0;
-var b=new Array('room1','room2','room3')
-io.on('connection', function (socket) {
+var socketflag;
 
-  //console.log("Connection " + socket.id + " accepted.");
-  //console.log("rooms " + socket.rooms[0] + " .");
- socket.emit('news', { hello: 'world' });
-  socket.on('my other event', function (data) {
-    console.log("socketid is:"+socket.id+" joined");
-  });
+io.on('connection', function (socket) {
+    
+  console.log("socketid is:"+socket.id+" joined");
+  socket.emit('news', { hello: 'world' });
+ 
 
   socket.on('join', function (data) {
-    socket.join(data.room,function (){
-      console.log(socket.id+" joined "+socket.rooms[socket.rooms.length-1]);
+    socketflag=0;
+    for(a=0;a<socket.rooms.length;a++)
+      if(socket.rooms[a]==data.room)socketflag=1;
+
+   if(socketflag)
+     socket.leave(data.room,function(){
+       socket.emit('roomsin',{room:socket.rooms});
+       console.log(socket.id+" leaved "+data.room);
     });
+   else
+    socket.join(data.room,function (err){
+       console.log(socket.id+" joined "+socket.rooms[socket.rooms.length-1]);
+       socket.emit('roomsin',{room:socket.rooms});
+    });
+  
+   
   });
 
   socket.on('disconnect', function(){
     console.log("socketid is:"+socket.id+" disconnect");
   });
+
   socket.on('request',function (data){
-   //io.emit('updata', data);
-    socket.in('room1').emit('updata', { hello: 'hello,room1' });
-    socket.in('room2').emit('updata', { hello: 'hello,room2' });
-    // socket.broadcast.emit('updata', { hello: 'date' });
+   //socket.in('平南').emit('updata', { hello: 'hello,平南' });  当前socket接收不到
+    io.in('平南').emit('updata', { dat: 'hello,平南' });
+    io.in('保定南').emit('updata', { dat: 'hello,保定南' });
+  
      console.log(data);
   });
   
@@ -103,6 +115,9 @@ var dat,a;
 var firstdat = false;
 var tcpserver = net.createServer(function (socket) {
   // 新的连接
+
+
+
   console.log('CONNECTED: ' +
         socket.remoteAddress + ':' + socket.remotePort);
   //console.log(socket.id.toString());
@@ -135,7 +150,7 @@ var tcpserver = net.createServer(function (socket) {
         array[a]="0"+ array[a];
      // if (array[a]==",") array[a]=" ";
     }
-    io.in('room1').emit('updata', { hello:array });
+    io.in('平南').emit('updata', { dat:array });
     console.log(array.length);
   
     

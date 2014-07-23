@@ -4,53 +4,19 @@
     <title><%= title %></title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
     <script src="/socket.io/socket.io.js"></script>
-    <script>
- //   
-  var ip_addr = document.location.hostname;
-  var socket = io.connect(ip_addr);
-  socket.on('news', function (data) {
-    console.log(data);
-    socket.emit('my other event', { my: 'data' });
-  });
-
-  function joinroom(roomnumber){
-   socket.emit('join', { room:roomnumber });
-  };
-  function cleartxt(){
-    document.getElementById("chat-window").value="";
-};
-  var a;
-  socket.on('updata', function (data) {
-
-    for(a=0;a<data.hello.length;a++)
-    document.getElementById("chat-window").value+=data.hello[a]+" ";
-    document.getElementById("chat-window").value+="\n";
-    console.log(data.hello.length);
-  });
-
-
-
-/////////////who in room
-socket.on('roomsin', function (data) {
-    document.getElementById(data.room).class="btn btn-lg btn-warning";
-  });
-
-  </script>
+    <script src="socketio.js"></script>
    <% include nav %>
-
-
-
   </head>
+
  <body>     
-
-       <textarea id="chat-window" ></textarea>
-
-  <button id="room1" type="button" class="btn btn-lg btn-success" onclick=joinroom("room1")>进入平南</button>
-  <button id="room2" type="button" class="btn btn-lg btn-info" onclick=joinroom("room2")>进入保定南</button>
+  <p id="socketstate"></p>
+  <p id="roomstate"></p>
+  <textarea id="chat-window" ></textarea>
+  <button id="平南" type="button" class="btn btn-lg btn-success" onclick=joinroom("平南")>进入平南</button>
+  <button id="保定南" type="button" class="btn btn-lg btn-info" onclick=joinroom("保定南")>进入保定南</button>
   <button  type="button" class="btn btn-lg btn-info" onclick="cleartxt()">清空</button>
-     
 
              
   <% include footer %>
-  </body>
+ </body>
 </html>
