@@ -23,7 +23,9 @@
   });
 
 
-
+socket.on('disconnect', function(){
+   document.getElementById("socketstate").innerHTML="服务器已断开"
+  });
 /////////////who in room
   socket.on('roomsin', function (data) {
     data.room[0]="已经进入的车站";

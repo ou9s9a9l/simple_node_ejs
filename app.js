@@ -25,10 +25,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
+app.use(function(req,res,next){
+    console.log("%s %s",req.method,req.url);
+    next();
+});
+app.use('/', routes);
 app.use('/subform', subform);
 app.use('/usecookies', usecookies);
-app.use('/', routes);
 
 
 /// catch 404 and forward to error handler
@@ -63,7 +66,7 @@ app.use(function(err, req, res, next) {
 });
 
 server.listen(80);
-module.exports = app;
+//module.exports = app;
 var a=0;
 var socketflag;
 

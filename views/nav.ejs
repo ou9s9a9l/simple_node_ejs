@@ -6,7 +6,7 @@
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>Theme Template for Bootstrap</title>
+    <title>语音提示</title>
 
     <!-- Bootstrap core CSS -->
       <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -15,11 +15,22 @@
 
     <!-- Custom styles for this template -->
     <link href="theme.css" rel="stylesheet">
-     <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
+    
+   <style type="text/css">
+        .headroom {position: fixed;top: 0;left: 0;right: 0;transition: all .2s ease-in-out;}
+        .headroom--unpinned {top: -100px;}
+        .headroom--pinned {top: 0;}
+    </style>
 
+    <style type="text/css">
+      .scrollspy-example {
+        height: 1200px;
+        overflow: auto;
+        position: relative;
+      }
+    </style>
 
-     <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+     <div class="navbar navbar-inverse navbar-fixed-top" id="oyx" role="navigation">
      
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
@@ -51,6 +62,20 @@
           </ul>
         </div><!--/.nav-collapse -->
       </div>
-  
 
+
+
+
+
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+   
+    <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script  type="text/javascript"  src="https://rawgithub.com/WickyNilliams/headroom.js/master/dist/headroom.js"></script>
+
+    <script  type="text/javascript"  src="https://rawgithub.com/WickyNilliams/headroom.js/master/src/jQuery.headroom.js"></script>
+
+    <script type="text/javascript"> 
+   $(".navbar-fixed-top").headroom();  
+   </script>
     <div class="container theme-showcase" role="main">
